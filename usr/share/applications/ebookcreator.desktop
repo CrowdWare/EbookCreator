@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Ebook Creator
+Name[de]=Ebook Creator
+Comment=Ebook Creation Tool from http://ebc.crowdware.at
+Comment[de]=Ebook Erstellungstool von http://ebc.crowdware.at/index_de.html
+Exec=/usr/share/ebookcreator/bin/EbookCreator
+Path=/usr/share/ebookcreator
+Icon=logo
+Terminal=true
+Type=Application
+Categories=Development;
+StartupNotify=false

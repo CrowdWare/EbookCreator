@@ -7,6 +7,7 @@ Sample
 build
 dist
 packages/com.vendor.product/data
+usr/share/ebookcreator/bin
 EbookCreator-Linux*
 EbookCreator-Windows*
 main.spec

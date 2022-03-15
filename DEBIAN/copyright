@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: ebookcreator
+Upstream-Contact: Olaf Japp <artanidos@crowdware.at>
+Source: https://bitbucket.org/artanidos/ebookcreator/src/master/
+
+
+Files: *
+Copyright: 2019-2022 Olaf Japp
+License: GPL-3+

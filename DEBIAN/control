@@ -1,0 +1,12 @@
+Package: ebookcreator
+Version: 1.3.2
+Section: misc
+Priority: extra
+Architecture: all
+Depends: bash
+Installed-Size: 8
+Maintainer: Olaf Japp <artanidos@crowdware.at>
+Homepage: https://www.crowdware.at
+Description: Ebook Creator is an easy to use ebook creation tool 
+ Ebook Creator is an easy to use ebook creation tool running on the desktop computer. You can easily create EPUB and PDF to publish on Amazon Kindle and other distributors.
+ 
