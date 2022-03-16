@@ -1,4 +1,5 @@
 # 1.3.2
+- sources directory is now /home/[user]/.local/share/CrowdWare/EbookCreator/sources
 - Debian package added
 
 # 1.3.1

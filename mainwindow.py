@@ -53,6 +53,7 @@ from settingsdialog import SettingsDialog
 from pdfexport import PdfExport
 from interfaces import GeneratorInterface
 from plugins.calendar import CalendarGenerator
+from pathlib import Path
 
 import resources
 
@@ -63,7 +64,9 @@ class MainWindow(QMainWindow):
     def __init__(self, app):
         QMainWindow.__init__(self)
         self.install_directory = os.getcwd()
-
+        if self.install_directory.endswith("/bin"):
+            self.install_directory = self.install_directory[0:-4]
+        self.data_directory = os.path.join(str(Path.home()), ".local", "share", "CrowdWare", "EbookCreator")
         self.app = app
         self.book = None
         self.last_book = ""
@@ -646,7 +649,7 @@ class MainWindow(QMainWindow):
         QMessageBox.about(self, "About " + QCoreApplication.applicationName(), "EbookCreator\nVersion: " + QCoreApplication.applicationVersion() + "\n(C) Copyright 2020 CrowdWare. All rights reserved.\n\nThis program is provided AS IS with NO\nWARRANTY OF ANY KIND, INCLUDING THE\nWARRANTY OF DESIGN, MERCHANTABILITY AND\nFITNESS FOR A PATICULAR PURPOSE.")
 
     def newFile(self):
-        dlg = ProjectWizard(self.install_directory, parent = self)
+        dlg = ProjectWizard(self.install_directory, self.data_directory, parent = self)
         dlg.loadBook.connect(self.loadBook)
         dlg.show()
 
@@ -658,7 +661,7 @@ class MainWindow(QMainWindow):
         dialog.setWindowTitle("Load Ebook")
         dialog.setOption(QFileDialog.DontUseNativeDialog, True)
         dialog.setAcceptMode(QFileDialog.AcceptOpen)
-        dialog.setDirectory(os.path.join(self.install_directory, "sources"))
+        dialog.setDirectory(os.path.join(self.data_directory, "sources"))
         if dialog.exec_():
             fileName = dialog.selectedFiles()[0]
         del dialog

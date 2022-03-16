@@ -58,7 +58,7 @@ class Settings(QDialog):
         self.language.addItem("fr")
         self.language.setEditText(book.language)
         self.theme = QComboBox()
-        dir = os.path.join(install_directory, "themes")
+        dir = os.path.join(self.install_directory, "themes")
         for r, dirs, f in os.walk(dir):
             if r == dir:
                 for d in dirs:
@@ -101,7 +101,7 @@ class Settings(QDialog):
             self.book.theme = self.theme.currentText()
             #copy theme files
             rmtree(os.path.join(self.book.source_path, "css"))
-            shutil.copytree(os.path.join(self.install_directory, "themes", self.book.theme, "assets", "css"), os.path.join(self.book.source_path, "css"))
+            shutil.copytree(os.path.join(self.self.install_directory, "themes", self.book.theme, "assets", "css"), os.path.join(self.book.source_path, "css"))
 
         self.book.save()
         self.saved = True

@@ -30,11 +30,12 @@ import resources
 class ProjectWizard(QWizard):
     loadBook = pyqtSignal(object)
 
-    def __init__(self, install_directory, parent = None):
+    def __init__(self, install_directory, data_directory, parent = None):
         super(ProjectWizard, self).__init__(parent)
+        self.data_directory = data_directory
         self.install_directory = install_directory
         self.addPage(IntroPage())
-        self.addPage(ProjectInfoPage(install_directory))
+        self.addPage(ProjectInfoPage(install_directory, data_directory))
         self.addPage(ConclusionPage())
         self.setWindowTitle("Project Wizard")
 
@@ -43,9 +44,9 @@ class ProjectWizard(QWizard):
         language = self.field("language")
         theme = self.field("theme")
         creator = self.field("creator")
-        path = os.path.join(self.install_directory, "sources", projectName.replace(" ", "").lower())
-        if not os.path.exists(os.path.join(self.install_directory, "sources")):
-            os.mkdir(os.path.join(self.install_directory, "sources"))
+        path = os.path.join(self.data_directory, "sources", projectName.replace(" ", "").lower())
+        if not os.path.exists(os.path.join(self.data_directory, "sources")):
+            os.mkdir(os.path.join(self.data_directory, "sources"))
         os.mkdir(path)
         os.mkdir(os.path.join(path, "parts"))
         os.mkdir(os.path.join(path, "images"))
@@ -66,7 +67,7 @@ class ProjectWizard(QWizard):
         with open(os.path.join(path, "parts", "first.md"), "w") as f:
             f.write("#" + projectName + "\n")
 
-        shutil.copytree(os.path.join(os.getcwd(), "themes", theme, "assets", "css"), os.path.join(path, "css"))
+        shutil.copytree(os.path.join(self.install_directory, "themes", theme, "assets", "css"), os.path.join(path, "css"))
 
         super().accept()
         self.loadBook.emit(path + "/book.qml")
@@ -91,8 +92,9 @@ class IntroPage(QWizardPage):
 
 class ProjectInfoPage(QWizardPage):
 
-    def __init__(self, install_directory):
+    def __init__(self, install_directory, data_directory):
         QWizardPage.__init__(self)
+        self.data_directory = data_directory
         self.install_directory = install_directory
         self.setTitle("Project Information")
         self.setSubTitle("Specify basic information about the project for which you "
@@ -122,7 +124,7 @@ class ProjectInfoPage(QWizardPage):
         self.themeLabel = QLabel("&Theme")
         self.theme = QComboBox()
         self.themeLabel.setBuddy(self.theme)
-        dir = os.path.join(install_directory, "themes")
+        dir = os.path.join(self.install_directory, "themes")
         for r, dirs, f in os.walk(dir):
             if r == dir:
                 for d in dirs:
@@ -150,7 +152,7 @@ class ProjectInfoPage(QWizardPage):
         self.projectNameLineEdit.textChanged.connect(self.projectNameChanged)
 
     def projectNameChanged(self, name):
-        if os.path.isdir(os.path.join(self.install_directory, "sources", name.lower())):
+        if os.path.isdir(os.path.join(self.data_directory, "sources", name.lower())):
             self.warning.setText("WARNING<br/>A project with the name " + name.lower() + " already exists.<br/>If you continue the project will be overridden.")
         else:
             self.warning.setText("")

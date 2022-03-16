@@ -37,7 +37,7 @@ from xml.dom.minidom import parseString
 def createEpub(output, book, win):
     dir = mkdtemp()
     guid = str(uuid.uuid4())
-    copyAssets(dir, book.theme)
+    copyAssets(dir, book.theme, win.install_directory)
     os.mkdir(os.path.join(dir, "EPUB", "parts"))
     os.mkdir(os.path.join(dir, "EPUB", "images"))
     os.mkdir(os.path.join(dir, "META-INF"))
@@ -47,10 +47,10 @@ def createEpub(output, book, win):
     writeMimetype(dir)
     writeContainer(dir)
 
-    generatePackage(dir, book, guid)
-    toc = generateParts(dir, book)
-    generateToc(dir, book, toc)
-    generateNcx(dir, book, guid)
+    generatePackage(dir, book, guid, win.install_directory)
+    toc = generateParts(dir, book, win.install_directory)
+    generateToc(dir, book, toc, win.install_directory)
+    generateNcx(dir, book, guid, win.install_directory)
 
     os.chdir(dir)
     files = getAllFiles(dir)
@@ -91,7 +91,7 @@ def writeContainer(dir):
         f.write("</container>")
 
 
-def generatePackage(dir, book, uuid):
+def generatePackage(dir, book, uuid, install_directory):
     context = {}
     context["uuid"] = uuid
     context["lang"] = book.language
@@ -127,8 +127,7 @@ def generatePackage(dir, book, uuid):
 
     context["items"] = items
     context["spine"] = spine
-    path = os.getcwd()
-    with open(os.path.join(path, "themes", book.theme, "layout", "package.opf"), "r") as fp:
+    with open(os.path.join(install_directory, "themes", book.theme, "layout", "package.opf"), "r") as fp:
         data = fp.read()
     tmp = Template(data)
     xml = tmp.render(context)
@@ -146,7 +145,7 @@ def fixTables(text):
     return text
 
 
-def generateParts(dir, book):
+def generateParts(dir, book, install_directory):
     toc = []
     item = {}
     item["href"] = "toc.xhtml"
@@ -157,7 +156,6 @@ def generateParts(dir, book):
     item["id"] = "nav"
     item["parts"] = []
     toc.append(item)
-    path = os.getcwd()
     for part in book._parts:
         if not part.pdfOnly:
             context = {}
@@ -172,7 +170,7 @@ def generateParts(dir, book):
                 for item in list:
                     toc.append(item)
                 context["content"] = html
-                with open(os.path.join(path, "themes", book.theme, "layout", "template.xhtml")) as fp:
+                with open(os.path.join(install_directory, "themes", book.theme, "layout", "template.xhtml")) as fp:
                     data = fp.read()
                 tmp = Template(data)
                 xhtml = tmp.render(context)
@@ -208,9 +206,8 @@ def addLineNumbers(html):
     return ret
 
 
-def copyAssets(dir, theme):
-    path = os.getcwd()
-    shutil.copytree(os.path.join(path, "themes", theme, "assets"), os.path.join(dir, "EPUB"))
+def copyAssets(dir, theme, install_directory):
+    shutil.copytree(os.path.join(install_directory, "themes", theme, "assets"), os.path.join(dir, "EPUB"))
 
 
 def copyImages(dir, book):
@@ -273,11 +270,10 @@ def getLinks(text, part_name):
     return list
 
 
-def generateToc(dir, book, parts):
-    path = os.getcwd()
+def generateToc(dir, book, parts, install_directory):
     context = {}
     context["parts"] = parts
-    with open(os.path.join(path, "themes", book.theme, "layout", "toc.xhtml"), "r") as fp:
+    with open(os.path.join(install_directory, "themes", book.theme, "layout", "toc.xhtml"), "r") as fp:
         data = fp.read()
     tmp = Template(data)
     xhtml = tmp.render(context)
@@ -285,7 +281,7 @@ def generateToc(dir, book, parts):
         f.write(xhtml)
 
 
-def generateNcx(dir, book, uuid):
+def generateNcx(dir, book, uuid, install_directory):
     items = []
     context = {}
     context["title"] = book.name
@@ -305,8 +301,7 @@ def generateNcx(dir, book, uuid):
 
     try:
         # only relevant for epub2
-        path = os.getcwd()
-        with open(os.path.join(path, "themes", book.theme, "layout", "toc.ncx")) as fp:
+        with open(os.path.join(install_directory, "themes", book.theme, "layout", "toc.ncx")) as fp:
             data = fp.read()
         tmp = Template(data)
         xhtml = tmp.render(context)

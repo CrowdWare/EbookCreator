@@ -3,34 +3,79 @@
 # change version number for executable in this file
 # change the version in config/config.xml
 # change the ReleaseDate in packages/.../meta/package.xml 
+# should only be called from outside of the source directory
 
 
-rm -r dist/*
-rm -r packages/com.vendor.product/data/*
-pyinstaller main.py
-mkdir packages/com.vendor.product/data/bin
-mkdir packages/com.vendor.product/data/themes
-mkdir packages/com.vendor.product/data/sources
-mkdir packages/com.vendor.product/data/books
-cp -r dist/main/* packages/com.vendor.product/data/bin
-cp -r themes/* packages/com.vendor.product/data/themes
-cp AppRun packages/com.vendor.product/data
-mv packages/com.vendor.product/data/bin/main packages/com.vendor.product/data/bin/EbookCreator
-/home/art/Qt/Tools/QtInstallerFramework/3.1/bin/binarycreator -f -c config/config.xml -p packages EbookCreator-Linux-1.3.2.Setup
+if [ ! -d "ebookcreator" ] 
+then
+    echo "Directory ebookcreator DOES NOT exists." 
+    echo "Make sure you are running this script from one directory above ebookcreator"
+    exit 9999
+fi
+
+# build executable
+if [ -d "build_ebc" ] 
+then
+    rm -r build_ebc/*
+else
+    mkdir build_ebc
+fi
+if [ -d "work_ebc" ] 
+then
+    rm -r work_ebc/*
+else
+    mkdir work_ebc
+fi
+
+pyinstaller --workpath ./work_ebc --distpath ./build_ebc ./ebookcreator/main.py
+
+#mv packages/com.vendor.product/data/bin/main packages/com.vendor.product/data/bin/EbookCreator
+
+# installer part
+if [ -d "installer_ebc" ] 
+then
+    rm -r installer_ebc/*
+else
+    mkdir installer_ebc
+fi
+
+mkdir installer_ebc/packages
+mkdir installer_ebc/packages/at.crowdware.ebc
+mkdir installer_ebc/packages/at.crowdware.ebc/meta
+mkdir installer_ebc/packages/at.crowdware.ebc/data
+mkdir installer_ebc/packages/at.crowdware.ebc/data/bin
+mkdir installer_ebc/packages/at.crowdware.ebc/data/themes
+mkdir installer_ebc/packages/at.crowdware.ebc/data/sources
+mkdir installer_ebc/packages/at.crowdware.ebc/data/books
+cp -r build_ebc/main/* installer_ebc/packages/at.crowdware.ebc/data/bin
+cp -r ebookcreator/themes/* installer_ebc/packages/at.crowdware.ebc/data/themes
+cp ebookcreator/run installer_ebc/packages/at.crowdware.ebc/data
+cp ebookcreator/INSTALLER/installscript.qs installer_ebc/packages/at.crowdware.ebc/meta
+cp ebookcreator/INSTALLER/package.xml installer_ebc/packages/at.crowdware.ebc/meta
+/home/art/Qt/Tools/QtInstallerFramework/4.2/bin/binarycreator -f -c ./ebookcreator/INSTALLER/config.xml -p installer_ebc/packages EbookCreator-Linux-1.3.2.Setup
 
 
 # Debian part
-rm -r usr/share/ebookcreator/bin/*
-rm -r usr/share/pixmaps/*
-mkdir usr/share/ebookcreator/bin
-mkdir usr/share/ebookcreator/themes
-mkdir usr/share/ebookcreator/sources
-mkdir usr/share/ebookcreator/books
-cp -r dist/main/* usr/share/ebookcreator/bin
-cp -r themes/* usr/share/ebookcreator/themes
-cp images/logo.png usr/share/pixmaps
-mv usr/share/ebookcreator/bin/main usr/share/ebookcreator/bin/EbookCreator
-
-cd ..
-dpkg -b ./ebookcreator ebookcreator.deb
-cd ebookcreator
+if [ -d "debian_ebc" ] 
+then
+    rm -r debian_ebc/*
+else
+    mkdir debian_ebc
+fi
+mkdir debian_ebc/DEBIAN
+mkdir debian_ebc/usr
+mkdir debian_ebc/usr/bin
+mkdir debian_ebc/usr/share
+mkdir debian_ebc/usr/share/applications
+mkdir debian_ebc/usr/share/pixmaps
+mkdir debian_ebc/usr/share/ebookcreator
+mkdir debian_ebc/usr/share/ebookcreator/bin
+mkdir debian_ebc/usr/share/ebookcreator/themes
+mkdir debian_ebc/usr/share/ebookcreator/sources
+mkdir debian_ebc/usr/share/ebookcreator/books
+cp -r ebookcreator/DEBIAN/* debian_ebc/DEBIAN
+cp -r build_ebc/main/* debian_ebc/usr/share/ebookcreator/bin
+cp -r ebookcreator/themes/* debian_ebc/usr/share/ebookcreator/themes
+cp ebookcreator/images/logo.png debian_ebc/usr/share/pixmaps
+cp ebookcreator/usr/share/applications/* debian_ebc/usr/share/applications
+dpkg -b ./debian_ebc ebookcreator.deb

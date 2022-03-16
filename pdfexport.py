@@ -32,9 +32,9 @@ from weasyprint import HTML, CSS
 
 
 class PdfExport():
-    def __init__(self, book, status_bar):
+    def __init__(self, book, status_bar, install_directory):
         self.status_bar = status_bar
-        self.install_directory = os.getcwd()
+        self.install_directory = install_directory
 
         filename = ""
         dialog = QFileDialog()
@@ -162,10 +162,9 @@ def getLinks(text, part_name):
     return list
 
 def generateToc(book, parts):
-    path = os.getcwd()
     context = {}
     context["parts"] = parts
-    with open(os.path.join(path, "themes", book.theme, "layout", "toc_pdf.xhtml"), "r") as fp:
+    with open(os.path.join(self.install_directory, "themes", book.theme, "layout", "toc_pdf.xhtml"), "r") as fp:
         data = fp.read()
     tmp = Template(data)
     xhtml = tmp.render(context)
