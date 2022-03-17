@@ -59,7 +59,7 @@ class PdfExport():
         html += '</head>\n<body>\n'
 
         toc, htm, html = generateParts(book, html)
-        html += generateToc(book, toc)
+        html += generateToc(book, toc, self.install_directory)
         html += '<p style="page-break-before: always">'
         html += htm
         html += '\n</body>\n</html>'
@@ -161,10 +161,10 @@ def getLinks(text, part_name):
                 nodes[c - 2]["parts"].append(item)
     return list
 
-def generateToc(book, parts):
+def generateToc(book, parts, install_directory):
     context = {}
     context["parts"] = parts
-    with open(os.path.join(self.install_directory, "themes", book.theme, "layout", "toc_pdf.xhtml"), "r") as fp:
+    with open(os.path.join(install_directory, "themes", book.theme, "layout", "toc_pdf.xhtml"), "r") as fp:
         data = fp.read()
     tmp = Template(data)
     xhtml = tmp.render(context)

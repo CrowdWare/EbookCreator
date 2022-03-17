@@ -811,7 +811,7 @@ class MainWindow(QMainWindow):
         self.htmlReady.emit(html)
 
     def pdfExport(self):
-        p = PdfExport(self.book, self.statusBar())
+        p = PdfExport(self.book, self.statusBar() ,self.install_directory)
 
     def spellCheck(self):
         if not self.filename:

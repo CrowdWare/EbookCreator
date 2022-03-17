@@ -1,3 +1,7 @@
+# 1.3.3
+- Bugfix: creating a PDF was bugged
+
+
 # 1.3.2
 - sources directory is now /home/[user]/.local/share/CrowdWare/EbookCreator/sources
 - Debian package added

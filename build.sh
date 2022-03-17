@@ -29,32 +29,6 @@ fi
 
 pyinstaller --workpath ./work_ebc --distpath ./build_ebc ./ebookcreator/main.py
 
-#mv packages/com.vendor.product/data/bin/main packages/com.vendor.product/data/bin/EbookCreator
-
-# installer part
-if [ -d "installer_ebc" ] 
-then
-    rm -r installer_ebc/*
-else
-    mkdir installer_ebc
-fi
-
-mkdir installer_ebc/packages
-mkdir installer_ebc/packages/at.crowdware.ebc
-mkdir installer_ebc/packages/at.crowdware.ebc/meta
-mkdir installer_ebc/packages/at.crowdware.ebc/data
-mkdir installer_ebc/packages/at.crowdware.ebc/data/bin
-mkdir installer_ebc/packages/at.crowdware.ebc/data/themes
-mkdir installer_ebc/packages/at.crowdware.ebc/data/sources
-mkdir installer_ebc/packages/at.crowdware.ebc/data/books
-cp -r build_ebc/main/* installer_ebc/packages/at.crowdware.ebc/data/bin
-cp -r ebookcreator/themes/* installer_ebc/packages/at.crowdware.ebc/data/themes
-cp ebookcreator/run installer_ebc/packages/at.crowdware.ebc/data
-cp ebookcreator/INSTALLER/installscript.qs installer_ebc/packages/at.crowdware.ebc/meta
-cp ebookcreator/INSTALLER/package.xml installer_ebc/packages/at.crowdware.ebc/meta
-/home/art/Qt/Tools/QtInstallerFramework/4.2/bin/binarycreator -f -c ./ebookcreator/INSTALLER/config.xml -p installer_ebc/packages EbookCreator-Linux-1.3.2.Setup
-
-
 # Debian part
 if [ -d "debian_ebc" ] 
 then
@@ -73,9 +47,12 @@ mkdir debian_ebc/usr/share/ebookcreator/bin
 mkdir debian_ebc/usr/share/ebookcreator/themes
 mkdir debian_ebc/usr/share/ebookcreator/sources
 mkdir debian_ebc/usr/share/ebookcreator/books
-cp -r ebookcreator/DEBIAN/* debian_ebc/DEBIAN
+cp ebookcreator/DEBIAN/changelog debian_ebc/DEBIAN
+cp ebookcreator/DEBIAN/control debian_ebc/DEBIAN
+cp ebookcreator/DEBIAN/copyright debian_ebc/DEBIAN
+cp ebookcreator/DEBIAN/ebookcreator.desktop debian_ebc/usr/share/applications
 cp -r build_ebc/main/* debian_ebc/usr/share/ebookcreator/bin
 cp -r ebookcreator/themes/* debian_ebc/usr/share/ebookcreator/themes
 cp ebookcreator/images/logo.png debian_ebc/usr/share/pixmaps
-cp ebookcreator/usr/share/applications/* debian_ebc/usr/share/applications
+
 dpkg -b ./debian_ebc ebookcreator.deb
