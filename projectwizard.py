@@ -56,19 +56,34 @@ class ProjectWizard(QWizard):
             f.write("Ebook {\n")
             f.write("    name: \"" + projectName + "\"\n")
             f.write("    language: \"" + language + "\"\n")
+            f.write("    size: \"A5\"\n")
             f.write("    theme: \"" + theme + "\"\n")
             f.write("    creator: \"" + creator + "\"\n")
             f.write("    Part {\n")
+            f.write("       src: \"cover.md\"\n")
+            f.write("       name: \"Cover\"\n")
+            f.write("       pdfOnly: true\n")
+            f.write("    }\n")
+            f.write("    Part {\n")
+            f.write("       src: \"toc.md\"\n")
+            f.write("       name: \"Toc\"\n")
+            f.write("    }\n")
+            f.write("    Part {\n\n")
             f.write("        src: \"first.md\"\n")
             f.write("        name: \"First\"\n")
             f.write("    }")
             f.write("}\n")
 
+        with open(os.path.join(path, "parts", "cover.md"), "w") as f:
+            f.write("![cover](../images/cover_template.png \"cover\")\n")
+        with open(os.path.join(path, "parts", "toc.md"), "w") as f:
+            f.write("placeholder for table of contents\n")
         with open(os.path.join(path, "parts", "first.md"), "w") as f:
             f.write("#" + projectName + "\n")
-
+        
         shutil.copytree(os.path.join(self.install_directory, "themes", theme, "assets", "css"), os.path.join(path, "css"))
-
+        shutil.copy(os.path.join(self.install_directory, "images", "cover_template.png"), os.path.join(path, "images"))
+        
         super().accept()
         self.loadBook.emit(path + "/book.qml")
 

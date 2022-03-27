@@ -1,3 +1,6 @@
+# 1.3.4
+- Template for new books now contain a cover and a toc
+
 # 1.3.3
 - Bugfix: creating a PDF was bugged
 
