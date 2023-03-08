@@ -1,0 +1,12 @@
+.vscode
+.DS_Store
+__pycache__
+sources
+books
+Sample
+build
+dist
+packages/com.vendor.product/data
+EbookCreator-Linux*
+EbookCreator-Windows*
+main.spec
