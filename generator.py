@@ -109,7 +109,7 @@ def generatePackage(dir, book, uuid):
             if name == "toc":
                 pass #only for PDF
             else:
-                item["href"] = os.path.join("parts", name + ".xhtml")
+                item["href"] = "parts/" + name + ".xhtml"
                 item["id"] = name
                 item["type"] = "application/xhtml+xml"
                 items.append(item)
@@ -120,7 +120,7 @@ def generatePackage(dir, book, uuid):
             filename, extension = os.path.splitext(file)
             if filename != ".DS_Store":
                 item = {}
-                item["href"] = os.path.join("images", file)
+                item["href"] = "images/" + file
                 item["id"] = filename +"_img"
                 item["type"] = "image/" + extension[1:]
                 items.append(item)
@@ -296,7 +296,7 @@ def generateNcx(dir, book, uuid):
             order += 1
             item = {}
             name = part.name.replace(" ", "-")
-            item["href"] = os.path.join("parts", name.lower() + ".xhtml")
+            item["href"] = "parts/" + name.lower() + ".xhtml"
             item["id"] = "navPoint-" + str(order)
             item["name"] = name
             item["order"] = str(order)

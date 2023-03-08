@@ -28,7 +28,7 @@ from PySide6.QtWebEngineCore import QWebEnginePage
 from PySide6.QtGui import QPageLayout, QPageSize
 from PySide6.QtWidgets import QApplication, QFileDialog 
 from PySide6.QtCore import Qt, QUrl
-#from weasyprint.html import HTML, CSS
+#from weasyprint import HTML, CSS
 
 
 class PdfExport():
