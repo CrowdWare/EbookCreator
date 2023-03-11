@@ -1,6 +1,7 @@
 #1.4.0
 - Converted project to PySide6
 - Bugfix: On Windows all files are now saved as utf-8
+- Bugfix: Syntax highlight is working now
 
 #1.3.1
 - Ignoring now .DS_Store files on Mac

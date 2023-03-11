@@ -1,5 +1,5 @@
 # ToDo
-- Syntax highlight is defect
 - Insert TOC should be a function
 - PdfOnly should be editable
-- - pdfexport weasyprint is broken in version 58.1 on windows
+- weasyprint is broken on Windows, so PDF export is not possible
+- Export to GODOT to create interactive ebooks

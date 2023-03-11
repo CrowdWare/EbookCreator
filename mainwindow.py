@@ -652,8 +652,8 @@ class MainWindow(QMainWindow):
         dialog.setOption(QFileDialog.DontUseNativeDialog, True)
         dialog.setAcceptMode(QFileDialog.AcceptOpen)
         dialog.setDirectory(os.path.join(self.install_directory, "sources"))
-        if dialog.exec_():
-            print(fileName)
+        if dialog.exec():
+            fileName = dialog.selectedFiles()[0]
         del dialog
         if not fileName:
             return
@@ -719,6 +719,7 @@ class MainWindow(QMainWindow):
         QApplication.restoreOverrideCursor()
 
     def loadBook(self, filename):
+        print(filename)
         self.last_book = filename
         self.filename = ""
         engine = QQmlEngine()
@@ -745,12 +746,6 @@ class MainWindow(QMainWindow):
             for error in self.component.errors():
                 print(error.toString())
             return
-
-
-
-
-
-
 
     def settingsDialog(self):
         dlg = SettingsDialog(self.theme, self.palette().highlight().color().name(), parent=self)

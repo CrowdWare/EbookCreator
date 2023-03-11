@@ -18,17 +18,17 @@
 #
 #############################################################################
 
-import os
-from pathlib import Path
-from markdown2 import markdown
-from tempfile import mkdtemp
-from generator import addLineNumbers
-from jinja2 import Template
-from PySide6.QtWebEngineCore import QWebEnginePage
-from PySide6.QtGui import QPageLayout, QPageSize
-from PySide6.QtWidgets import QApplication, QFileDialog 
-from PySide6.QtCore import Qt, QUrl
-#from weasyprint import HTML, CSS
+#import os
+#from pathlib import Path
+#from markdown2 import markdown
+#from tempfile import mkdtemp
+#from generator import addLineNumbers
+#from jinja2 import Template
+#from PySide6.QtWebEngineCore import QWebEnginePage
+#from PySide6.QtGui import QPageLayout, QPageSize
+#from PySide6.QtWidgets import QApplication, QFileDialog 
+#from PySide6.QtCore import Qt, QUrl
+from weasyprint import HTML, CSS
 
 
 class PdfExport():
@@ -76,7 +76,7 @@ def generateParts(book, xhtml):
     partNo = 1
     html = ""
     for part in book._parts:
-        with open(os.path.join(book.source_path, "parts", part.src), "r", encoding='utf-8') as i:
+        with open(os.path.join(book.source_path, "parts", part.src), "r") as i:
             text = i.read()
         name = part.name.replace(" ", "-").lower()
         if name == "toc":
@@ -165,7 +165,7 @@ def generateToc(book, parts):
     path = os.getcwd()
     context = {}
     context["parts"] = parts
-    with open(os.path.join(path, "themes", book.theme, "layout", "toc_pdf.xhtml"), "r", encoding='utf-8') as fp:
+    with open(os.path.join(path, "themes", book.theme, "layout", "toc_pdf.xhtml"), "r") as fp:
         data = fp.read()
     tmp = Template(data)
     xhtml = tmp.render(context)
