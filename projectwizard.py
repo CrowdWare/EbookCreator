@@ -56,6 +56,7 @@ class ProjectWizard(QWizard):
             f.write("    name: \"" + projectName + "\"\n")
             f.write("    language: \"" + language + "\"\n")
             f.write("    theme: \"" + theme + "\"\n")
+            f.write("    linenumbers: \"True\"\n")
             f.write("    creator: \"" + creator + "\"\n")
             f.write("    Part {\n")
             f.write("        src: \"first.md\"\n")

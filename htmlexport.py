@@ -18,20 +18,19 @@
 #
 #############################################################################
 
-#import os
-#from pathlib import Path
-#from markdown2 import markdown
-#from tempfile import mkdtemp
-#from generator import addLineNumbers
-#from jinja2 import Template
-#from PySide6.QtWebEngineCore import QWebEnginePage
-#from PySide6.QtGui import QPageLayout, QPageSize
-#from PySide6.QtWidgets import QApplication, QFileDialog 
-#from PySide6.QtCore import Qt, QUrl
-from weasyprint import HTML, CSS
+import os
+from pathlib import Path
+from markdown2 import markdown
+from tempfile import mkdtemp
+from generator import addLineNumbers
+from jinja2 import Template
+from PySide6.QtWebEngineCore import QWebEnginePage
+from PySide6.QtGui import QPageLayout, QPageSize
+from PySide6.QtWidgets import QApplication, QFileDialog 
+from PySide6.QtCore import Qt, QUrl
 
 
-class PdfExport():
+class HtmlExport():
     def __init__(self, book, status_bar):
         self.status_bar = status_bar
         self.install_directory = os.getcwd()
@@ -39,12 +38,12 @@ class PdfExport():
         filename = ""
         dialog = QFileDialog()
         dialog.setFileMode(QFileDialog.AnyFile)
-        dialog.setNameFilter("PDF (*.pdf);;All (*)")
-        dialog.setWindowTitle("Create PDF")
+        dialog.setNameFilter("HTML (*.html);;All (*)")
+        dialog.setWindowTitle("Create HTML")
         dialog.setOption(QFileDialog.DontUseNativeDialog, True)
         dialog.setAcceptMode(QFileDialog.AcceptSave)
         dialog.setDirectory(book.source_path)
-        dialog.setDefaultSuffix("pdf")
+        dialog.setDefaultSuffix("html")
         if dialog.exec_():
             filename = dialog.selectedFiles()[0]
         del dialog
@@ -54,21 +53,37 @@ class PdfExport():
         QApplication.setOverrideCursor(Qt.WaitCursor)
         html = '<?xml version="1.0" encoding="utf-8"?>\n<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">\n'
         html += '<head>\n'
-        html += '<link href="file://' + os.path.join(book.source_path, "css", "pastie.css") + '" rel="stylesheet" type="text/css"/>\n'
-        html += '<link href="file://' + os.path.join(book.source_path, "css", "stylesheet.css") + '\" rel="stylesheet" type="text/css"/>\n'
+        html += '<link href="file:///' + book.source_path + "/css/pastie.css" + '" rel="stylesheet" type="text/css"/>\n'
+        html += '<link href="file:///' + book.source_path + "/css/stylesheet.css" + '\" rel="stylesheet" type="text/css"/>\n'
+        html += '<style>@media print {.pagebreak {clear: both;page-break-after: always;}}</style>\n'
         html += '</head>\n<body>\n'
-
-        toc, htm, html = generateParts(book, html)
-        html += generateToc(book, toc)
-        html += '<p style="page-break-before: always">'
+        htm = ""
+        if book.theme == "Paperback":
+            html += generatePBParts(book)
+        else:
+            toc, htm, html = generateParts(book, html)
+            html += generateToc(book, toc)
+            
         html += htm
         html += '\n</body>\n</html>'
 
-        h = HTML(string=html)
-        css = CSS(string='@page { size: ' + book.size + '; margin: 0cm;}')
-        h.write_pdf(filename, stylesheets=[css])
+        with open(filename, "w") as f:
+            f.write(html)
         QApplication.restoreOverrideCursor()
         self.status_bar.showMessage("Ready")
+
+def generatePBParts(book):
+    html = ""
+    for part in book._parts:
+        with open(os.path.join(book.source_path, "parts", part.src), "r") as i:
+            text = i.read()
+            htm = fixTables(markdown(text, html4tags = False, extras=["fenced-code-blocks", "wiki-tables", "tables", "header-ids"]))
+            if book.linenumbers == "True":
+                htm = addLineNumbers(htm)
+            htm = htm.replace("../images", "file:///" + book.source_path + "/images")
+            html += htm
+            html += '<div class="pagebreak"></div>\n'
+    return html
 
 def generateParts(book, xhtml):
     toc = []
@@ -94,10 +109,11 @@ def generateParts(book, xhtml):
             list = getLinks(htm, name)
             for item in list:
                 toc.append(item)
-            htm = addLineNumbers(htm)
+            # we don't want linenumbers in HTML, which will be converted to PDF 
+            if book.linenumbers == "True":
+                htm = addLineNumbers(htm)
             # fix img tags
-            book.source_path
-            htm = htm.replace("../images", "file://" + os.path.join(book.source_path, "images"))
+            htm = htm.replace("../images", "file:///" + book.source_path + "/images")
             if partNo < len(book._parts):
                 htm += "<p style=\"page-break-before: always\">"
             # should be true for cover page
@@ -169,4 +185,4 @@ def generateToc(book, parts):
         data = fp.read()
     tmp = Template(data)
     xhtml = tmp.render(context)
-    return xhtml
+    return xhtml + '<p style="page-break-before: always">'

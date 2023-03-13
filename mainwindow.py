@@ -50,7 +50,7 @@ from projectwizard import ProjectWizard
 from settings import Settings
 from dark import DarkFusion
 from settingsdialog import SettingsDialog
-from pdfexport import PdfExport
+from htmlexport import HtmlExport
 from interfaces import GeneratorInterface
 from plugins.calendar import CalendarGenerator
 
@@ -405,10 +405,10 @@ class MainWindow(QMainWindow):
         book_act.triggered.connect(self.create)
         book_act.setToolTip("Create an ebook")
 
-        pdf_act = QAction("Create &PDF", self)
-        pdf_act.setStatusTip("Create PDF")
-        pdf_act.setToolTip("Create PDF")
-        pdf_act.triggered.connect(self.pdfExport)
+        html_act = QAction("Create &HTML", self)
+        html_act.setStatusTip("Create HTML")
+        html_act.setToolTip("Create HTML")
+        html_act.triggered.connect(self.htmlExport)
 
         settings_act = QAction("&Settings", self)
         settings_act.setStatusTip("Open settings dialog")
@@ -496,7 +496,7 @@ class MainWindow(QMainWindow):
         file_menu.addAction(new_act)
         file_menu.addAction(open_act)
         file_menu.addAction(book_act)
-        file_menu.addAction(pdf_act)
+        file_menu.addAction(html_act)
         file_menu.addSeparator()
         file_menu.addAction(settings_act)
         file_menu.addSeparator()
@@ -719,7 +719,6 @@ class MainWindow(QMainWindow):
         QApplication.restoreOverrideCursor()
 
     def loadBook(self, filename):
-        print(filename)
         self.last_book = filename
         self.filename = ""
         engine = QQmlEngine()
@@ -787,11 +786,12 @@ class MainWindow(QMainWindow):
         html += '</head>\n<body>\n'
         html += markdown(text, html4tags=False, extras=["fenced-code-blocks", "wiki-tables", "tables", "header-ids"])
         html += '\n</body>\n</html>'
-        html = addLineNumbers(html)
+        if self.book.linenumbers == "True":
+            html = addLineNumbers(html)
         self.htmlReady.emit(html)
 
-    def pdfExport(self):
-        p = PdfExport(self.book, self.statusBar())
+    def htmlExport(self):
+        p = HtmlExport(self.book, self.statusBar())
 
     def spellCheck(self):
         if not self.filename:

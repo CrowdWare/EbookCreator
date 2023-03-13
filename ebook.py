@@ -34,6 +34,7 @@ class Ebook(QObject):
         self._creator = ""
         self._publisher = ""
         self._size = ""
+        self._linenumbers = "True"
         self._parts = []
         self.filename = ""
         self.source_path = ""
@@ -98,6 +99,14 @@ class Ebook(QObject):
     def size(self, size):
         self._size = size
 
+    @Property("QString")
+    def linenumbers(self):
+        return self._linenumbers
+    
+    @linenumbers.setter
+    def linenumbers(self, value):
+        self._linenumbers = value
+
     def setFilename(self, filename):
         info = QFileInfo(filename)
         self.filename = info.fileName()
@@ -155,6 +164,7 @@ class Ebook(QObject):
             f.write("    name: \"" + self._name + "\"\n")
             f.write("    language: \"" + self._language + "\"\n")
             f.write("    size: \"" + self._size + "\"\n")
+            f.write("    linenumbers: \"" + self._linenumbers + "\"\n")
             f.write("    theme: \"" + self._theme + "\"\n")
             f.write("    creator: \"" + self._creator + "\"\n")
             for part in self._parts:

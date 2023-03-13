@@ -24,7 +24,7 @@ from shutil import rmtree
 from PySide6.QtCore import (QCoreApplication, QParallelAnimationGroup,
                           QPropertyAnimation, Qt, Property, Signal)
 from PySide6.QtGui import QColor, QImage, QPalette, QPixmap
-from PySide6.QtWidgets import QDialog, QHBoxLayout, QLabel, QGridLayout, QComboBox, QLineEdit, QPushButton
+from PySide6.QtWidgets import QDialog, QHBoxLayout, QLabel, QGridLayout, QComboBox, QLineEdit, QPushButton, QCheckBox
 
 
 class Settings(QDialog):
@@ -58,18 +58,18 @@ class Settings(QDialog):
         self.language.addItem("fr")
         self.language.setEditText(book.language)
         self.theme = QComboBox()
+
         dir = os.path.join(install_directory, "themes")
         for r, dirs, f in os.walk(dir):
             if r == dir:
                 for d in dirs:
                     self.theme.addItem(d)
         self.theme.setCurrentText(book.theme)
-        self.size = QComboBox()
-        self.size.setEditable(True)
-        self.size.addItem("A5")
-        self.size.addItem("A4")
-        self.size.addItem("A3")
-        self.size.setEditText(book.size)
+        self.linenumbers = QCheckBox()
+        if book.linenumbers == "True":
+            self.linenumbers.setChecked(True)
+        else:
+            self.linenumbers.setChecked(False)
         layout.addWidget(QLabel("Title"), 0, 0)
         layout.addWidget(self.title, 0, 1, 1, 3)
         layout.addWidget(QLabel("Creator"), 1, 0)
@@ -78,8 +78,8 @@ class Settings(QDialog):
         layout.addWidget(self.language, 2, 1)
         layout.addWidget(QLabel("Theme"), 3, 0)
         layout.addWidget(self.theme, 3, 1)
-        layout.addWidget(QLabel("Pagesize (PDF)"), 4, 0)
-        layout.addWidget(self.size, 4, 1)
+        layout.addWidget(QLabel("Linenumbers"), 4, 0)
+        layout.addWidget(self.linenumbers, 4, 1)
         layout.addLayout(button_layout, 5, 0, 1, 4)
         self.setLayout(layout)
 
@@ -89,14 +89,17 @@ class Settings(QDialog):
         self.creator.textChanged.connect(self.textChanged)
         self.language.editTextChanged.connect(self.textChanged)
         self.theme.currentIndexChanged.connect(self.textChanged)
-        self.size.editTextChanged.connect(self.textChanged)
+        self.linenumbers.stateChanged.connect(self.textChanged)
 
     def okClicked(self):
         if self.book.name != self.title.text():
             self.book.name = self.title.text()
         self.book.creator = self.creator.text()
         self.book.language = self.language.currentText()
-        self.book.size = self.size.currentText()
+        if self.linenumbers.isChecked():
+            self.book.linenumbers = "True"
+        else:
+            self.book.linenumbers = "False"
         if self.book.theme != self.theme.currentText:
             self.book.theme = self.theme.currentText()
             #copy theme files

@@ -1,5 +1,6 @@
 #1.4.0
 - Converted project to PySide6
+- Its possible to export HTML instead of PDF (to be able to upload paperback on Amazon)
 - Bugfix: On Windows all files are now saved as utf-8
 - Bugfix: Syntax highlight is working now
 
