@@ -19,15 +19,15 @@
 #############################################################################
 
 import os
-from PyQt5.QtWidgets import QLabel, QWidget, QStyleOption, QStyle
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty, QDir, QFile, QIODevice
-from PyQt5.QtGui import QPixmap, QImage, QPalette, QPainter
+from PySide6.QtWidgets import QLabel, QWidget, QStyleOption, QStyle
+from PySide6.QtCore import Qt, Signal, Property, QDir, QFile, QIODevice
+from PySide6.QtGui import QPixmap, QImage, QPalette, QPainter
 import resources
 
 
 class FlatButton(QLabel):
-    clickedWithReturn = pyqtSignal(object)
-    clicked = pyqtSignal()
+    clickedWithReturn = Signal(object)
+    clicked = Signal()
 
     def __init__(self, svg):
         QLabel.__init__(self)
@@ -89,7 +89,7 @@ class FlatButton(QLabel):
             self.setPixmap(self.disabled_icon)
         QWidget.leaveEvent(self, event)
 
-    @pyqtProperty(bool)
+    @Property(bool)
     def enabled(self):
         return self._enabled
 

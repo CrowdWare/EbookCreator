@@ -19,7 +19,7 @@
 #############################################################################
 
 import os
-from PyQt5.QtCore import QObject, pyqtProperty
+from PySide6.QtCore import QObject, Property
 
 
 class Part(QObject):
@@ -30,7 +30,7 @@ class Part(QObject):
         self._src = ""
         self._pdfOnly = False
 
-    @pyqtProperty('QString')
+    @Property('QString')
     def name(self):
         return self._name
 
@@ -38,7 +38,7 @@ class Part(QObject):
     def name(self, name):
         self._name = name
 
-    @pyqtProperty('QString')
+    @Property('QString')
     def src(self):
         return self._src
 
@@ -46,7 +46,7 @@ class Part(QObject):
     def src(self, src):
         self._src = src
 
-    @pyqtProperty('bool')
+    @Property('bool')
     def pdfOnly(self):
         return self._pdfOnly
 

@@ -18,8 +18,8 @@
 #
 #############################################################################
 
-from PyQt5.QtGui import QFont, QFontMetrics, QImage, QSyntaxHighlighter, QTextCharFormat, QColor
-from PyQt5.QtWidgets import QWidget
+from PySide6.QtGui import QFont, QFontMetrics, QImage, QSyntaxHighlighter, QTextCharFormat, QColor
+from PySide6.QtWidgets import QWidget
 
 TITLE = 0
 BOLD = 1

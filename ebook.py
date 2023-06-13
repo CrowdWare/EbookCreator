@@ -19,14 +19,12 @@
 #############################################################################
 
 import os
-from PyQt5.QtCore import QObject, pyqtProperty, QFileInfo, Q_CLASSINFO
-from PyQt5.QtQml import QQmlListProperty
+from PySide6.QtCore import QObject, Property, QFileInfo, ClassInfo
+from PySide6.QtQml import ListProperty
 from part import Part
 
-
+@ClassInfo(DefaultProperty = 'parts')
 class Ebook(QObject):
-    Q_CLASSINFO('DefaultProperty', 'parts')
-
     def __init__(self, parent = None):
         super().__init__(parent)
         self._name = ""
@@ -40,11 +38,18 @@ class Ebook(QObject):
         self.source_path = ""
         self.window = ""
 
-    @pyqtProperty(QQmlListProperty)
-    def parts(self):
-        return QQmlListProperty(Part, self, self._parts)
+    def part(self, n):
+        return self._parts[n]
 
-    @pyqtProperty('QString')
+    def partCount(self):
+        return len(self._parts)
+
+    def appendPart(self, item):
+        self._parts.append(item)
+
+    parts = ListProperty(Part, appendPart)
+
+    @Property('QString')
     def name(self):
         return self._name
 
@@ -52,7 +57,7 @@ class Ebook(QObject):
     def name(self, name):
         self._name = name
 
-    @pyqtProperty('QString')
+    @Property('QString')
     def language(self):
         return self._language
 
@@ -60,7 +65,7 @@ class Ebook(QObject):
     def language(self, language):
         self._language = language
 
-    @pyqtProperty('QString')
+    @Property('QString')
     def theme(self):
         return self._theme
 
@@ -68,7 +73,7 @@ class Ebook(QObject):
     def theme(self, theme):
         self._theme = theme
 
-    @pyqtProperty('QString')
+    @Property('QString')
     def creator(self):
         return self._creator
 
@@ -76,7 +81,7 @@ class Ebook(QObject):
     def creator(self, creator):
         self._creator = creator
 
-    @pyqtProperty('QString')
+    @Property('QString')
     def publisher(self):
         return self._publisher
 
@@ -84,7 +89,7 @@ class Ebook(QObject):
     def publisher(self, publisher):
         self._publisher = publisher
 
-    @pyqtProperty('QString')
+    @Property('QString')
     def size(self):
         return self._size
 

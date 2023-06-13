@@ -18,13 +18,13 @@
 #
 #############################################################################
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QPainter
-from PyQt5.QtCore import pyqtSignal, Qt
+from PySide6.QtWidgets import QWidget
+from PySide6.QtGui import QPainter
+from PySide6.QtCore import Signal, Qt
 
 
 class ColorRect(QWidget):
-    mouseClicked = pyqtSignal()
+    mouseClicked = Signal()
 
     def __init__(self, parent=None):
         super(ColorRect, self).__init__(parent)

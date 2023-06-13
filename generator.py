@@ -30,7 +30,7 @@ from markdown2 import markdown
 from markupsafe import Markup
 from jinja2 import Template
 from zipfile import ZipFile
-from PyQt5.QtCore import QCoreApplication
+from PySide6.QtCore import QCoreApplication
 from xml.dom.minidom import parseString
 
 

@@ -20,7 +20,7 @@
 
 from datetime import datetime, date, timedelta
 from interfaces import GeneratorInterface
-from PyQt5.QtWidgets import QWidget, QDialog, QHBoxLayout, QPushButton, QGridLayout, QLabel, QComboBox
+from PySide6.QtWidgets import QWidget, QDialog, QHBoxLayout, QPushButton, QGridLayout, QLabel, QComboBox
 
 class CalendarGenerator(GeneratorInterface):
     def __init__(self):

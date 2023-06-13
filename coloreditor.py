@@ -18,15 +18,15 @@
 #
 #############################################################################
 
-from PyQt5.QtWidgets import QWidget, QSlider, QSpinBox, QLabel, QGridLayout, QLineEdit
-from PyQt5.QtGui import QColor, QPainter, QImage
-from PyQt5.QtCore import pyqtSignal, QSize, Qt
+from PySide6.QtWidgets import QWidget, QSlider, QSpinBox, QLabel, QGridLayout, QLineEdit
+from PySide6.QtGui import QColor, QPainter, QImage
+from PySide6.QtCore import Signal, QSize, Qt
 from colorpicker import ColorPicker
 from colorrect import ColorRect
 
 
 class ColorEditor(QWidget):
-    colorChanged = pyqtSignal(object)
+    colorChanged = Signal(object)
 
     def __init__(self, label, parent=None):
         super(ColorEditor, self).__init__(parent)

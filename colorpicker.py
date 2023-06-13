@@ -18,14 +18,14 @@
 #
 #############################################################################
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtGui import QColor, QPainter, QImage
-from PyQt5.QtCore import pyqtSignal, QSize, Qt
+from PySide6.QtWidgets import QWidget
+from PySide6.QtGui import QColor, QPainter, QImage
+from PySide6.QtCore import Signal, QSize, Qt
 
 
 class ColorPicker(QWidget):
-    colorChanged = pyqtSignal(object)
-    colorPicked = pyqtSignal(object)
+    colorChanged = Signal(object)
+    colorPicked = Signal(object)
 
     def __init__(self, parent=None):
         super(ColorPicker, self).__init__(parent)

@@ -18,8 +18,8 @@
 #
 #############################################################################
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import pyqtSignal
+from PySide6.QtWidgets import QWidget
+from PySide6.QtCore import Signal
 
 class GeneratorInterface(QWidget):
     def __init__(self):

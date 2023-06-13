@@ -21,10 +21,10 @@
 import os
 import shutil
 from shutil import rmtree
-from PyQt5.QtCore import (QCoreApplication, QParallelAnimationGroup,
-                          QPropertyAnimation, Qt, pyqtProperty, pyqtSignal)
-from PyQt5.QtGui import QColor, QImage, QPalette, QPixmap
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QLabel, QGridLayout, QComboBox, QLineEdit, QPushButton
+from PySide6.QtCore import (QCoreApplication, QParallelAnimationGroup,
+                          QPropertyAnimation, Qt, Property, Signal)
+from PySide6.QtGui import QColor, QImage, QPalette, QPixmap
+from PySide6.QtWidgets import QDialog, QHBoxLayout, QLabel, QGridLayout, QComboBox, QLineEdit, QPushButton
 
 
 class Settings(QDialog):

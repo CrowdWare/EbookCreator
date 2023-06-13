@@ -19,15 +19,15 @@
 #############################################################################
 
 import os
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
-from PyQt5.QtCore import QParallelAnimationGroup, QPropertyAnimation, Qt, pyqtProperty, pyqtSignal, QDir, QFile, QIODevice
-from PyQt5.QtGui import QImage, QPalette, QPixmap, QColor, QIcon
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
+from PySide6.QtCore import QParallelAnimationGroup, QPropertyAnimation, Qt, Property, Signal, QDir, QFile, QIODevice
+from PySide6.QtGui import QImage, QPalette, QPixmap, QColor, QIcon
 import resources
 
 
 class Expander(QWidget):
-    expanded = pyqtSignal(object)
-    clicked = pyqtSignal()
+    expanded = Signal(object)
+    clicked = Signal()
 
     def __init__(self, header, svg):
         QWidget.__init__(self)
@@ -102,14 +102,14 @@ class Expander(QWidget):
         if value:
             self.is_expanded = True
             pal = self.palette()
-            pal.setColor(QPalette.Background, self.selected_color)
+            pal.setColor(QPalette.Window, self.selected_color)
             self.setPalette(pal)
             self.icon.setPixmap(self.selected_icon)
             self.hyper.setText("<a style=\"color: " + self.label_selected_color + "; text-decoration: none;\" href=\"#\">" + self.text + "</a>")
         else:
             self.is_expanded = False
             pal = self.palette()
-            pal.setColor(QPalette.Background, QColor(self.normal_color))
+            pal.setColor(QPalette.Window, QColor(self.normal_color))
             self.setPalette(pal)
             self.icon.setPixmap(self.normal_icon)
             self.hyper.setText("<a style=\"color: " + self.label_normal_color + "; text-decoration: none;\" href=\"#\">" + self.text + "</a>")
@@ -123,14 +123,14 @@ class Expander(QWidget):
     def addLayout(self, layout):
         self.content.setLayout(layout)
 
-    @pyqtProperty('QColor')
+    @Property('QColor')
     def color(self):
         return Qt.black
 
     @color.setter
     def color(self, color):
         pal = self.palette()
-        pal.setColor(QPalette.Background, QColor(color))
+        pal.setColor(QPalette.Window, QColor(color))
         self.setPalette(pal)
 
     def mouseReleaseEvent(self, me):
@@ -168,7 +168,7 @@ class Expander(QWidget):
     def enterEvent(self, event):
         if not self.is_expanded:
             pal = self.palette()
-            pal.setColor(QPalette.Background, QColor(self.hovered_color))
+            pal.setColor(QPalette.Window, QColor(self.hovered_color))
             self.setPalette(pal)
             self.icon.setPixmap(self.hovered_icon)
             self.hyper.setText("<a style=\"color: " + self.label_hovered_color + "; text-decoration: none;\" href=\"#\">" + self.text + "</a>")
@@ -177,7 +177,7 @@ class Expander(QWidget):
     def leaveEvent(self, event):
         if not self.is_expanded:
             pal = self.palette()
-            pal.setColor(QPalette.Background, QColor(self.normal_color))
+            pal.setColor(QPalette.Window, QColor(self.normal_color))
             self.setPalette(pal)
             self.icon.setPixmap(self.normal_icon)
             self.hyper.setText("<a style=\"color: " + self.label_normal_color + "; text-decoration: none;\" href=\"#\">" + self.text + "</a>")

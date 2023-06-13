@@ -18,8 +18,8 @@
 #
 #############################################################################
 
-from PyQt5.QtWidgets import QDialog, QGridLayout, QComboBox, QStyleFactory, QLabel, QWidget, QHBoxLayout, QPushButton
-from PyQt5.QtGui import QColor
+from PySide6.QtWidgets import QDialog, QGridLayout, QComboBox, QStyleFactory, QLabel, QWidget, QHBoxLayout, QPushButton
+from PySide6.QtGui import QColor
 from coloreditor import ColorEditor
 
 

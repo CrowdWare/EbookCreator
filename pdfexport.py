@@ -24,11 +24,11 @@ from markdown2 import markdown
 from tempfile import mkdtemp
 from generator import addLineNumbers
 from jinja2 import Template
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
-from PyQt5.QtGui import QPageLayout, QPageSize
-from PyQt5.QtWidgets import QApplication, QFileDialog 
-from PyQt5.QtCore import Qt, QUrl
-from weasyprint import HTML, CSS
+
+from PySide6.QtGui import QPageLayout, QPageSize
+from PySide6.QtWidgets import QApplication, QFileDialog 
+from PySide6.QtCore import Qt, QUrl
+#from weasyprint import HTML, CSS
 
 
 class PdfExport():

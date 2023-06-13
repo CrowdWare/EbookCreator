@@ -27,13 +27,13 @@ import inspect
 from threading import Thread, Lock
 from markdown2 import markdown
 from importlib import import_module
-from PyQt5.QtCore import (QByteArray, QCoreApplication, QPropertyAnimation,
-                          QSettings, Qt, QUrl, QSize, pyqtSignal, QMarginsF)
-from PyQt5.QtGui import (QColor, QFont, QIcon, QKeySequence, QPalette,
+from PySide6.QtCore import (QByteArray, QCoreApplication, QPropertyAnimation,QPoint,
+                          QSettings, Qt, QUrl, QSize, Signal, QMarginsF)
+from PySide6.QtGui import (QColor, QFont, QIcon, QKeySequence, QPalette,QAction,
                          QTextCursor, QImage, QPixmap)
-from PyQt5.QtQml import QQmlComponent, QQmlEngine
-from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtWidgets import (QAction, QApplication, QDialog, QDockWidget,
+from PySide6.QtQml import QQmlComponent, QQmlEngine
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWidgets import (QApplication, QDialog, QDockWidget,
                              QFileDialog, QHBoxLayout, QLineEdit, QListWidget,
                              QListWidgetItem, QMainWindow, QMessageBox,
                              QScrollArea, QSizePolicy, QSplitter, QProxyStyle,
@@ -59,7 +59,7 @@ import resources
 
 
 class MainWindow(QMainWindow):
-    htmlReady = pyqtSignal(str)
+    htmlReady = Signal(str)
 
     def __init__(self, app):
         QMainWindow.__init__(self)
@@ -668,22 +668,22 @@ class MainWindow(QMainWindow):
         if not fileName:
             return
         self.loadBook(fileName)
-
+        
     def writeSettings(self):
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, QCoreApplication.organizationName(), QCoreApplication.applicationName())
-        settings.setValue("geometry", self.saveGeometry())
+        settings.setValue('pos', self.pos())
+        settings.setValue('size', self.size())
+        settings.setValue("state", self.saveState())
         settings.setValue("lastBook", self.last_book)
-
+        
     def readSettings(self):
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, QCoreApplication.organizationName(), QCoreApplication.applicationName())
-        geometry = settings.value("geometry", QByteArray())
+        pos = settings.value('pos', QPoint(200, 200))
+        size = settings.value('size', QSize(400, 400))
+        self.move(pos)
+        self.resize(size)
+        self.restoreState(settings.value("state"))
         self.last_book = settings.value("lastBook")
-        if not geometry:
-            availableGeometry = QApplication.desktop().availableGeometry(self)
-            self.resize(availableGeometry.width() / 3, availableGeometry.height() / 2)
-            self.move((availableGeometry.width() - self.width()) / 2, (availableGeometry.height() - self.height()) / 2)
-        else:
-            self.restoreGeometry(geometry)
 
     def search(self):
         pass

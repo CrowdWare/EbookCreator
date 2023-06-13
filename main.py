@@ -20,10 +20,10 @@
 
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QStyleFactory
-from PyQt5.QtCore import Qt, QCoreApplication, QSettings, QByteArray, QUrl
-from PyQt5.QtGui import QIcon, QKeySequence, QFont, QPalette, QColor
-from PyQt5.QtQml import qmlRegisterType
+from PySide6.QtWidgets import QApplication, QStyleFactory
+from PySide6.QtCore import Qt, QCoreApplication, QSettings, QByteArray, QUrl
+from PySide6.QtGui import QIcon, QKeySequence, QFont, QPalette, QColor
+from PySide6.QtQml import qmlRegisterType
 from mainwindow import MainWindow
 from ebook import Ebook
 from part import Part
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName("CrowdWare")
     QCoreApplication.setApplicationName("EbookCreator")
-    QCoreApplication.setApplicationVersion("1.3.4")
+    QCoreApplication.setApplicationVersion("1.4.0")
 
     app.setStyle(QStyleFactory.create("Fusion"))
 
@@ -49,4 +49,4 @@ if __name__ == "__main__":
 
     win = MainWindow(app)
     win.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

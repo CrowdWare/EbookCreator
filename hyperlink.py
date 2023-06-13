@@ -18,12 +18,12 @@
 #
 #############################################################################
 
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal
+from PySide6.QtWidgets import QLabel
+from PySide6.QtCore import Qt, Slot, Signal
 
 
 class HyperLink(QLabel):
-    clicked = pyqtSignal()
+    clicked = Signal()
 
     def __init__(self, text):
         QLabel.__init__(self)
@@ -37,7 +37,7 @@ class HyperLink(QLabel):
         self.setCursor(Qt.PointingHandCursor)
         self.linkActivated.connect(self.linkActivated2)
 
-    @pyqtSlot(str)
+    @Slot(str)
     def linkActivated2(self, link):
         print("Link")
         self.clicked.emit()

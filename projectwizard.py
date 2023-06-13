@@ -21,14 +21,14 @@
 import os
 import datetime
 import shutil
-from PyQt5.QtWidgets import QWizard, QWizardPage, QLabel, QLineEdit, QComboBox, QGridLayout, QVBoxLayout
-from PyQt5.QtCore import pyqtSignal, QDir
-from PyQt5.QtGui import QPixmap
+from PySide6.QtWidgets import QWizard, QWizardPage, QLabel, QLineEdit, QComboBox, QGridLayout, QVBoxLayout
+from PySide6.QtCore import Signal, QDir
+from PySide6.QtGui import QPixmap
 import resources
 
 
 class ProjectWizard(QWizard):
-    loadBook = pyqtSignal(object)
+    loadBook = Signal(object)
 
     def __init__(self, install_directory, data_directory, parent = None):
         super(ProjectWizard, self).__init__(parent)
