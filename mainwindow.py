@@ -769,7 +769,7 @@ class MainWindow(QMainWindow):
             else:
                 print("The text was empty writing file: " + self.filename)
                 traceback.print_stack()
-                sys.exit(1)
+                //sys.exit(1)
 
 
         self.lock = Lock()
