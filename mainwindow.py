@@ -19,6 +19,7 @@
 #############################################################################
 
 import sys
+import traceback
 import os
 from pathlib import Path
 from shutil import copy
@@ -219,6 +220,7 @@ class MainWindow(QMainWindow):
             self.setWindowTitle(QCoreApplication.applicationName() + " - " + self.book.name)
 
     def addPart(self):
+        self.filename = ""
         self.item_edit.setText("")
         self.item_edit.setFocus()
         self.item_anim.setStartValue(0)
@@ -761,8 +763,14 @@ class MainWindow(QMainWindow):
     def textChanged(self):
         text = self.text_edit.toPlainText()
         if self.filename:
-            with open(self.filename, "w", encoding='utf-8') as f:
-                f.write(text)
+            if text != "":
+                with open(self.filename, "w", encoding='utf-8') as f:
+                    f.write(text)
+            else:
+                print("The text was empty writing file: " + self.filename)
+                traceback.print_stack()
+                sys.exit(1)
+
 
         self.lock = Lock()
         with self.lock:
