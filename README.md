@@ -38,7 +38,8 @@ The main chapter is marked with one "#" like # Chapter 1.
 A sub-chapter is marked with two "#" like ## Chapter 1.1.  
 The third level will be marked with three "#" like ### Chapter 1.1.1 and so on until you reach level 6.  
 
-If you want to add a picture then just open the images tab, press the "+" button there to choose an image and double-click this image in the list to add it to your book at the last cursor position. The "AltText" and "Title" can be changed by hand.
+If you want to add a picture then just open the images tab, press the "+" button there to choose an image and double-click this image in the list to add it to your book at the last cursor position. The "AltText" and "Title" can be changed by hand.  
+For eBooks the picture should not be wider that 542 pixel.
 
 The preview of the book can be seen on the right side of the application.
 

@@ -53,6 +53,7 @@ class HtmlExport():
         QApplication.setOverrideCursor(Qt.WaitCursor)
         html = '<?xml version="1.0" encoding="utf-8"?>\n<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">\n'
         html += '<head>\n'
+        html += '<meta charset="UTF-8">\n'
         html += '<link href="file:///' + book.source_path + "/css/pastie.css" + '" rel="stylesheet" type="text/css"/>\n'
         html += '<link href="file:///' + book.source_path + "/css/stylesheet.css" + '\" rel="stylesheet" type="text/css"/>\n'
         html += '<style>@media print {.pagebreak {clear: both;page-break-after: always;}}</style>\n'
@@ -87,7 +88,6 @@ def generatePBParts(book):
 
 def generateParts(book, xhtml):
     toc = []
-
     partNo = 1
     html = ""
     for part in book._parts:
