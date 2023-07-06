@@ -11,12 +11,12 @@
     <text>{{ title }}</text>
   </docTitle>
   <navMap>
-    <navPoint id="navPoint-0" playOrder="0">
+    <!--navPoint id="navPoint-0" playOrder="0">
       <navLabel>
         <text>Table of Contents</text>
       </navLabel>
       <content src="parts/toc.xhtml"/>
-    </navPoint>
+    </navPoint-->
     {% for item in items %}
       <navPoint id="{{ item.id }}" playOrder="{{ item.order }}">
       <navLabel>
