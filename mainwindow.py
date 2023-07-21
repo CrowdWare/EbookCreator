@@ -663,19 +663,19 @@ class MainWindow(QMainWindow):
 
     def writeSettings(self):
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, QCoreApplication.organizationName(), QCoreApplication.applicationName())
-        settings.setValue("geometry", self.saveGeometry())
+        #settings.setValue("geometry", self.saveGeometry())
         settings.setValue("lastBook", self.last_book)
 
     def readSettings(self):
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, QCoreApplication.organizationName(), QCoreApplication.applicationName())
-        geometry = settings.value("geometry", QByteArray())
+        #geometry = settings.value("geometry", QByteArray())
         self.last_book = settings.value("lastBook")
-        if not geometry:
-            availableGeometry = QApplication.desktop().availableGeometry(self)
-            self.resize(int(availableGeometry.width() / 1.5), int(availableGeometry.height() / 1.5))
-            self.move(int((availableGeometry.width() - self.width()) / 2), int((availableGeometry.height() - self.height()) / 2))
-        else:
-            self.restoreGeometry(geometry)
+        #if not geometry:
+        #    availableGeometry = QApplication.desktop().availableGeometry(self)
+        #    self.resize(int(availableGeometry.width() / 1.5), int(availableGeometry.height() / 1.5))
+        #    self.move(int((availableGeometry.width() - self.width()) / 2), int((availableGeometry.height() - self.height()) / 2))
+        #else:
+        #    self.restoreGeometry(geometry)
 
     def bold(self):
         if not self.filename:
