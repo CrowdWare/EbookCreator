@@ -1,5 +1,5 @@
 #############################################################################
-# Copyright (C) 2023 CrowdWare
+# Copyright (C) 2024 CrowdWare
 #
 # This file is part of EbookCreator.
 #
@@ -36,14 +36,14 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     QCoreApplication.setOrganizationName("CrowdWare")
     QCoreApplication.setApplicationName("EbookCreator")
-    QCoreApplication.setApplicationVersion("1.4.0")
+    QCoreApplication.setApplicationVersion("1.5.0")
 
     app.setStyle(QStyleFactory.create("Fusion"))
 
     qmlRegisterType(Ebook, 'EbookCreator', 1, 0, 'Ebook')
     qmlRegisterType(Part, 'EbookCreator', 1, 0, 'Part')
 
-    font = QFont("Sans Serif", 10)  #10 on Linux and Windows, 13 on MacOs
+    font = QFont("Sans Serif", 10)
     app.setFont(font)
     app.setWindowIcon(QIcon(":/images/logo.svg"))
 

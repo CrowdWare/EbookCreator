@@ -2,4 +2,5 @@
 - Insert TOC should be a function
 - PdfOnly should be editable
 - weasyprint is broken on Windows, so PDF export is not possible
-- Export to GODOT to create interactive ebooks
+- Export to APK as QML
+- Pro version (APK, Syntax)

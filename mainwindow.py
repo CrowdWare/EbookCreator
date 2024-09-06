@@ -1,5 +1,5 @@
 #############################################################################
-# Copyright (C) 2023 CrowdWare
+# Copyright (C) 2024 CrowdWare
 #
 # This file is part of EbookCreator.
 #
@@ -29,7 +29,7 @@ from threading import Thread, Lock
 from markdown2 import markdown
 from importlib import import_module
 from PySide6.QtCore import (QByteArray, QCoreApplication, QPropertyAnimation,
-                          QSettings, Qt, QUrl, QSize, Signal, QMarginsF)
+                          QSettings, Qt, QUrl, QSize, Signal, QMarginsF, QPoint)
 from PySide6.QtGui import (QColor, QFont, QIcon, QKeySequence, QPalette, QAction,
                          QTextCursor, QImage, QPixmap)
 from PySide6.QtQml import QQmlComponent, QQmlEngine
@@ -534,15 +534,18 @@ class MainWindow(QMainWindow):
         help_menu.addAction(spell_act)
 
         file_tool_bar = self.addToolBar("File")
+        file_tool_bar.setObjectName("FileToolBar")
         file_tool_bar.addAction(new_act)
         file_tool_bar.addAction(open_act)
         file_tool_bar.addAction(book_act)
 
         format_tool_bar = self.addToolBar("Format")
+        format_tool_bar.setObjectName("FormatToolBar")
         format_tool_bar.addAction(bold_act)
         format_tool_bar.addAction(italic_act)
 
         insert_toolbar = self.addToolBar("Insert")
+        insert_toolbar.setObjectName("InsertToolbar")
         insert_toolbar.addAction(image_act)
         insert_toolbar.addAction(table_act)
         insert_toolbar.addAction(á_act)
@@ -638,7 +641,7 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage("Ready")
 
     def about(self):
-        QMessageBox.about(self, "About " + QCoreApplication.applicationName(), "EbookCreator\nVersion: " + QCoreApplication.applicationVersion() + "\n(C) Copyright 2020 CrowdWare. All rights reserved.\n\nThis program is provided AS IS with NO\nWARRANTY OF ANY KIND, INCLUDING THE\nWARRANTY OF DESIGN, MERCHANTABILITY AND\nFITNESS FOR A PATICULAR PURPOSE.")
+        QMessageBox.about(self, "About " + QCoreApplication.applicationName(), "EbookCreator\nVersion: " + QCoreApplication.applicationVersion() + "\n(C) Copyright 2024 CrowdWare. All rights reserved.\n\nThis program is provided AS IS with NO\nWARRANTY OF ANY KIND, INCLUDING THE\nWARRANTY OF DESIGN, MERCHANTABILITY AND\nFITNESS FOR A PATICULAR PURPOSE.")
 
     def newFile(self):
         dlg = ProjectWizard(self.install_directory, parent = self)
@@ -663,19 +666,19 @@ class MainWindow(QMainWindow):
 
     def writeSettings(self):
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, QCoreApplication.organizationName(), QCoreApplication.applicationName())
-        #settings.setValue("geometry", self.saveGeometry())
+        settings.setValue('pos', self.pos())
+        settings.setValue('size', self.size())
+        settings.setValue("state", self.saveState())
         settings.setValue("lastBook", self.last_book)
 
     def readSettings(self):
         settings = QSettings(QSettings.IniFormat, QSettings.UserScope, QCoreApplication.organizationName(), QCoreApplication.applicationName())
-        #geometry = settings.value("geometry", QByteArray())
+        pos = settings.value('pos', QPoint(200, 200))
+        size = settings.value('size', QSize(400, 400))
+        self.move(pos)
+        self.resize(size)
+        self.restoreState(settings.value("state"))
         self.last_book = settings.value("lastBook")
-        #if not geometry:
-        #    availableGeometry = QApplication.desktop().availableGeometry(self)
-        #    self.resize(int(availableGeometry.width() / 1.5), int(availableGeometry.height() / 1.5))
-        #    self.move(int((availableGeometry.width() - self.width()) / 2), int((availableGeometry.height() - self.height()) / 2))
-        #else:
-        #    self.restoreGeometry(geometry)
 
     def bold(self):
         if not self.filename:
